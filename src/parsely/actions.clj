@@ -5,28 +5,29 @@
 
 (defn get-ontology
   [source]
-  (ont/ontology (ont/ontology-manager) source (rdf/model source)))
+  (try
+    (ont/ontology (ont/ontology-manager) source (rdf/model source))
+    (catch Exception e
+          (throw+ {:error_code "ERR_PARSE_FAILED"
+                   :ontology source}))))
 
 (defn parse
   [user source]
-  (try
-    (get-ontology source)
-    {:user user :source source}
-    (catch Exception e
-            (throw+ {:error_code "ERR_PARSE_FAILED"
-                     :user user
-                     :source source}))))
+  (get-ontology source)
+  {:user user :source source})
 
 (defn classes
   [user ontology]
-  {:classes 
-   (mapv ont/class->map (ont/classes (get-ontology ontology)))})
+  {:classes (mapv ont/class->map (ont/classes (get-ontology ontology)))})
 
 (defn properties
   [user ontology class]
-  (let [ont (get-ontology ontology)]
-    (println class)
-    (println (ont/uri->class ont class))
+  (let [ont (get-ontology ontology)
+        cls (ont/uri->class ont class)]
+    (when-not cls
+      (throw+ {:error_code "ERR_NOT_A_CLASS"
+               :ontology ontology
+               :class class}))
     {:properties
-     (mapv ont/class->map (ont/possible-class-properties ont (ont/uri->class ont class)))}))
+       (mapv ont/class->map (ont/possible-class-properties ont cls))}))
 

@@ -17,7 +17,7 @@
         field-seq  (seq func-map)]
     (when (some not-valid? field-seq)
       (throw+ {:error_code ERR_BAD_OR_MISSING_FIELD
-               :fields (mapv first (filter not-valid? field-seq))}))))
+               :fields     (mapv first (filter not-valid? field-seq))}))))
 
 (defn validate-params
   [params func-map]
