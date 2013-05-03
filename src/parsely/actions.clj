@@ -36,6 +36,6 @@
   (let [m (rdf/model triple-doc doc-type)]
     (when-not m
       (throw+ {:error_code "ERR_PARSE_FAILED"
-               :file triple-doc}))
+               :uri triple-doc}))
     {:triples (rdf/statements m)}))
 
