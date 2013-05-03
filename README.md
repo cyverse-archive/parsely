@@ -105,3 +105,28 @@ Returns a 500 status and a JSON body like this if the class doesn't exist in the
         "ontology" : "<ontology URI>",
         "class" : "<class URI>"
     }
+
+## Get the triples contained in a file.
+
+__GET__ /triples?uri=triples-uri&type=file-type
+
+Accepted values for 'type' are (without quotes): "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL", or "N3".
+
+Returns a 200 status and a JSON body that looks like the following on success:
+
+    {
+        "triples" : {
+            {
+                "subject" : "subject URI",
+                "predicate" : "predicate URI",
+                "object" : "object URI"
+            }
+        }
+    }
+
+Returns a 500 status and a JSON body like this if the file is unparseable:
+
+    {
+        "error_code" : "ERR_PARSE_FAILED",
+        "file" : "<source>"
+    }
