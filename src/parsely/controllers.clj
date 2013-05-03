@@ -2,6 +2,7 @@
   (:use [slingshot.slingshot :only [throw+]]
         [clojure-commons.error-codes])
   (:require [cheshire.core :as json]
+            [hoot.rdf :as rdf]
             [parsely.actions :as actions]))
 
 (defn check-missing-params
@@ -40,3 +41,9 @@
   (validate-params params {:user string? :ontology string? :class string?})
   (json/generate-string 
     (actions/properties (:user params) (:ontology params) (:class params))))
+
+(defn triples
+  [params]
+  (validate-params params {:uri string? :type #(contains? (set rdf/accepted-languages) %)})
+  (json/generate-string
+    (actions/triples (:uri params) (:type params))))

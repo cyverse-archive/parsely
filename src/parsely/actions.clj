@@ -31,3 +31,11 @@
     {:properties
        (mapv ont/class->map (ont/possible-class-properties ont cls))}))
 
+(defn triples
+  [triple-doc doc-type]
+  (let [m (rdf/model triple-doc doc-type)]
+    (when-not m
+      (throw+ {:error_code "ERR_PARSE_FAILED"
+               :file triple-doc}))
+    {:triples (rdf/statements m)}))
+
