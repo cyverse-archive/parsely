@@ -20,7 +20,7 @@
   [props config-valid configs]
   "parsely.app.listen-port")
 
-(cc/defprop-str irods-base
+#_((cc/defprop-str irods-base
   "Returns the path to the home directory in iRODS. Usually /iplant/home"
   [props config-valid configs]
   "parsely.app.irods-base")
@@ -53,7 +53,7 @@
 (cc/defprop-optstr irods-resc
   "Returns the iRODS resource."
   [props config-valid configs]
-  "parsely.app.irods-resc")
+  "parsely.app.irods-resc"))
 
 (defn- validate-config
   "Validates the configuration settings after they've been loaded."
