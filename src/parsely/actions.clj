@@ -1,6 +1,7 @@
 (ns parsely.actions
   (:require [hoot.ontology :as ont]
-            [hoot.rdf :as rdf])
+            [hoot.rdf :as rdf]
+            [parsely.config :as cfg])
   (:use [slingshot.slingshot :only [throw+]]))
 
 (defn get-ontology

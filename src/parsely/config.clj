@@ -20,6 +20,11 @@
   [props config-valid configs]
   "parsely.app.listen-port")
 
+(cc/defprop-int cache-threshold
+  "The number of models that the cache can contain."
+  [props config-valid configs]
+  "parsely.app.cache-threshold")
+
 #_((cc/defprop-str irods-base
   "Returns the path to the home directory in iRODS. Usually /iplant/home"
   [props config-valid configs]

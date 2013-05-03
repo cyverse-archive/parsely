@@ -3,6 +3,7 @@
         [clojure-commons.error-codes])
   (:require [cheshire.core :as json]
             [hoot.rdf :as rdf]
+            [clojure.core.memoize :as memo]
             [parsely.actions :as actions]))
 
 (defn check-missing-params
@@ -30,19 +31,28 @@
   (validate-params body {:url string?})
   (json/generate-string (actions/parse (:user params) (:url body))))
 
-(defn classes
+(defn classes-base
   [params]
   (validate-params params {:url string?})
   (json/generate-string (actions/classes (:url params))))
 
-(defn properties
+(def classes
+  (memo/memo-lru classes-base 10))
+
+(defn properties-base
   [params]
   (validate-params params {:url string? :class string?})
   (json/generate-string 
     (actions/properties (:url params) (:class params))))
 
-(defn triples
+(def properties
+  (memo/memo-lru properties-base 10))
+
+(defn triples-base
   [params]
   (validate-params params {:url string? :type #(contains? (set rdf/accepted-languages) %)})
   (json/generate-string
     (actions/triples (:url params) (:type params))))
+
+(def triples
+  (memo/memo-lru triples-base 10))

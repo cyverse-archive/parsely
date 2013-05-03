@@ -9,7 +9,8 @@
                  [com.novemberain/validateur "1.4.0"]
                  [ring/ring-jetty-adapter "1.1.8"]
                  [ring/ring-devel "1.1.8"]
-                 [cheshire "5.0.2"]]
+                 [cheshire "5.0.2"]
+                 [org.clojure/core.memoize "0.5.3"]]
   :iplant-rpm {:summary "parsely"
                :dependencies ["iplant-service-config >= 0.1.0-5"]
                :config-files ["log4j.properties"]
