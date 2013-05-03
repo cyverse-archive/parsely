@@ -22,35 +22,32 @@ This assumes that you have leiningen installed.
 
 # Endpoints
 
-__NOTE__: The user parameters don't do anything at the moment. Put whatever you want there. It's likely to be removed completely in the very near future.
-
 ## Ensuring that an ontology is parseable.
 
-__POST__ /parse?user=username
+__POST__ /parse
 
 Accepts a JSON body that looks like this:
 
     {
-        "source" : "URI to the ontology."
+        "url" : "URI to the ontology."
     }
 
 Returns a 200 status and a JSON body like the following on success:
 
     {
-        "user" : "<user>",
-        "source" : "<source>"
+        "url" : "<source>"
     }
 
 Returns a 500 status and a JSON body like the following on failure:
 
     {
         "error_code" : "ERR_PARSE_FAILED",
-        "ontology" : "<source>"
+        "url" : "<source>"
     }
 
 ## Get all of the classes defined in the ontology.
 
-__GET__ /classes?user=username&ontology=ontology-uri
+__GET__ /classes?url=ontology-url
 
 Returns a 200 status and a JSON body that looks like the following on success:
 
@@ -59,7 +56,7 @@ Returns a 200 status and a JSON body that looks like the following on success:
             {
                 "namespace" : "<namespace URI>",
                 "localname" : "<localname>",
-                "uri" : "<class URI>"
+                "url" : "<class URI>"
             }
         ]
     }
@@ -68,12 +65,12 @@ Returns a 500 status and a JSON body that looks like the following on failure:
 
     {
         "error_code" : "ERR_PARSE_FAILED",
-        "ontology" : "<ontology URI>"
+        "url" : "<ontology URI>"
     }
 
 ## Get the applicable properties for a class in an ontology.
 
-__GET__ /properties?user=username>&ontology=ontology-uri&class=class-uri
+__GET__ /properties?url=ontology-url&class=class-uri
 
 Make sure to URL encode the ontology and class URIs before making this call.
 
@@ -86,7 +83,7 @@ Returns a 200 status and a JSON body that looks like the following on success:
             {
                 "namespace" : "<namespace URI>",
                 "localname" : "<localname URI>",
-                "uri" : "<property URI>"
+                "url" : "<property URI>"
             }
         }
     }
@@ -95,20 +92,20 @@ Returns a 500 status and a JSON body like this if the ontology is unparseable:
 
     {
         "error_code" : "ERR_PARSE_FAILED",
-        "ontology" : "<source>"
+        "url" : "<source>"
     }
 
 Returns a 500 status and a JSON body like this if the class doesn't exist in the ontology:
 
     {
         "error_code" : "ERR_NOT_A_CLASS",
-        "ontology" : "<ontology URI>",
+        "url" : "<ontology URL>",
         "class" : "<class URI>"
     }
 
 ## Get the triples contained in a file.
 
-__GET__ /triples?uri=triples-uri&type=file-type
+__GET__ /triples?url=triples-uri&type=file-type
 
 Accepted values for 'type' are (without quotes): "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL", or "N3".
 
@@ -128,5 +125,5 @@ Returns a 500 status and a JSON body like this if the file is unparseable:
 
     {
         "error_code" : "ERR_PARSE_FAILED",
-        "file" : "<source>"
+        "url" : "<source>"
     }

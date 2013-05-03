@@ -9,24 +9,24 @@
     (ont/ontology (ont/ontology-manager) source (rdf/model source))
     (catch Exception e
           (throw+ {:error_code "ERR_PARSE_FAILED"
-                   :ontology source}))))
+                   :url source}))))
 
 (defn parse
-  [user source]
+  [source]
   (get-ontology source)
-  {:user user :source source})
+  {:url source})
 
 (defn classes
-  [user ontology]
+  [ontology]
   {:classes (mapv ont/class->map (ont/classes (get-ontology ontology)))})
 
 (defn properties
-  [user ontology class]
+  [ontology class]
   (let [ont (get-ontology ontology)
         cls (ont/uri->class ont class)]
     (when-not cls
       (throw+ {:error_code "ERR_NOT_A_CLASS"
-               :ontology ontology
+               :url ontology
                :class class}))
     {:properties
        (mapv ont/class->map (ont/possible-class-properties ont cls))}))
@@ -36,6 +36,6 @@
   (let [m (rdf/model triple-doc doc-type)]
     (when-not m
       (throw+ {:error_code "ERR_PARSE_FAILED"
-               :uri triple-doc}))
+               :url triple-doc}))
     {:triples (rdf/statements m)}))
 

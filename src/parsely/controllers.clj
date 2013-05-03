@@ -27,23 +27,22 @@
 
 (defn parse
   [body params]
-  (validate-params params {:user string?})
-  (validate-params body {:source string?})
-  (json/generate-string (actions/parse (:user params) (:source body))))
+  (validate-params body {:url string?})
+  (json/generate-string (actions/parse (:user params) (:url body))))
 
 (defn classes
   [params]
-  (validate-params params {:user string? :ontology string?})
-  (json/generate-string (actions/classes (:user params) (:ontology params))))
+  (validate-params params {:url string?})
+  (json/generate-string (actions/classes (:url params))))
 
 (defn properties
   [params]
-  (validate-params params {:user string? :ontology string? :class string?})
+  (validate-params params {:url string? :class string?})
   (json/generate-string 
-    (actions/properties (:user params) (:ontology params) (:class params))))
+    (actions/properties (:url params) (:class params))))
 
 (defn triples
   [params]
-  (validate-params params {:uri string? :type #(contains? (set rdf/accepted-languages) %)})
+  (validate-params params {:url string? :type #(contains? (set rdf/accepted-languages) %)})
   (json/generate-string
-    (actions/triples (:uri params) (:type params))))
+    (actions/triples (:url params) (:type params))))
