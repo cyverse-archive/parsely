@@ -25,14 +25,14 @@
 (defroutes parsely-routes
   (GET "/" [] "Welcome to parsely.")
   
-  (POST "/parse" [:as {params :params body :body}]
+  #_((POST "/parse" [:as {params :params body :body}]
         (trap "parse" controllers/parse body params))
   
   (GET "/classes" [:as {params :params}]
        (trap "classes" controllers/classes params))
   
   (GET "/properties" [:as {params :params}]
-       (trap "properties" controllers/properties params))
+       (trap "properties" controllers/properties params)))
   
   (GET "/triples" [:as {params :params}]
        (trap "triples" controllers/triples params)))

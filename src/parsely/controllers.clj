@@ -28,31 +28,35 @@
 
 (defn parse
   [body params]
-  (validate-params body {:url string?})
+  (validate-params body {:url string? :user params})
   (json/generate-string (actions/parse (:user params) (:url body))))
 
 (defn classes-base
   [params]
-  (validate-params params {:url string?})
-  (json/generate-string (actions/classes (:url params))))
+  (validate-params params {:url string? :user params})
+  (json/generate-string (actions/classes (:user params) (:url params))))
 
 (def classes
   (memo/memo-lru classes-base 10))
 
 (defn properties-base
   [params]
-  (validate-params params {:url string? :class string?})
+  (validate-params params {:url string? :user string? :class string?})
   (json/generate-string 
-    (actions/properties (:url params) (:class params))))
+    (actions/properties (:user params) (:url params) (:class params))))
 
 (def properties
   (memo/memo-lru properties-base 10))
 
+(defn accepted-types
+  []
+  (set (conj rdf/accepted-languages "csv" "tsv")))
+
 (defn triples-base
   [params]
-  (validate-params params {:url string? :type #(contains? (set rdf/accepted-languages) %)})
+  (validate-params params {:url string? :user string? :type #(contains? (accepted-types) %)})
   (json/generate-string
-    (actions/triples (:url params) (:type params))))
+    (actions/triples (:user params) (:url params) (:type params))))
 
 (def triples
   (memo/memo-lru triples-base 10))

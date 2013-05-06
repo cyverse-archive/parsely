@@ -1,7 +1,9 @@
 (ns parsely.config
   (:use [slingshot.slingshot :only [throw+]])
   (:require [clojure-commons.config :as cc]
-            [clojure-commons.error-codes :as ce]))
+            [clojure-commons.error-codes :as ce]
+            [clj-jargon.jargon :as jg]
+            [clojure.core.memoize :as memo]))
 
 (def ^:private props
   "A ref for storing the configuration properties."
@@ -25,7 +27,7 @@
   [props config-valid configs]
   "parsely.app.cache-threshold")
 
-#_((cc/defprop-str irods-base
+(cc/defprop-str irods-base
   "Returns the path to the home directory in iRODS. Usually /iplant/home"
   [props config-valid configs]
   "parsely.app.irods-base")
@@ -58,7 +60,16 @@
 (cc/defprop-optstr irods-resc
   "Returns the iRODS resource."
   [props config-valid configs]
-  "parsely.app.irods-resc"))
+  "parsely.app.irods-resc")
+
+(def jargon-cfg
+  (memo/memo #(jg/init (irods-host)
+                       (irods-port)
+                       (irods-user)
+                       (irods-pass)
+                       (irods-base)
+                       (irods-zone)
+                       (irods-resc))))
 
 (defn- validate-config
   "Validates the configuration settings after they've been loaded."
