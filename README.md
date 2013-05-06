@@ -22,101 +22,29 @@ This assumes that you have leiningen installed.
 
 # Endpoints
 
-## Ensuring that an ontology is parseable.
-
-__POST__ /parse
-
-Accepts a JSON body that looks like this:
-
-    {
-        "url" : "URI to the ontology."
-    }
-
-Returns a 200 status and a JSON body like the following on success:
-
-    {
-        "url" : "<source>"
-    }
-
-Returns a 500 status and a JSON body like the following on failure:
-
-    {
-        "error_code" : "ERR_PARSE_FAILED",
-        "url" : "<source>"
-    }
-
-## Get all of the classes defined in the ontology.
-
-__GET__ /classes?url=ontology-url
-
-Returns a 200 status and a JSON body that looks like the following on success:
-
-    {
-        "classes" : [
-            {
-                "namespace" : "<namespace URI>",
-                "localname" : "<localname>",
-                "url" : "<class URI>"
-            }
-        ]
-    }
-
-Returns a 500 status and a JSON body that looks like the following on failure:
-
-    {
-        "error_code" : "ERR_PARSE_FAILED",
-        "url" : "<ontology URI>"
-    }
-
-## Get the applicable properties for a class in an ontology.
-
-__GET__ /properties?url=ontology-url&class=class-uri
-
-Make sure to URL encode the ontology and class URIs before making this call.
-
-The class must be a class in the ontology. This endpoint also takes into account a classes superclasses when determining which properties to use.
-
-Returns a 200 status and a JSON body that looks like the following on success:
-
-    {
-        "properties" : {
-            {
-                "namespace" : "<namespace URI>",
-                "localname" : "<localname URI>",
-                "url" : "<property URI>"
-            }
-        }
-    }
-
-Returns a 500 status and a JSON body like this if the ontology is unparseable:
-
-    {
-        "error_code" : "ERR_PARSE_FAILED",
-        "url" : "<source>"
-    }
-
-Returns a 500 status and a JSON body like this if the class doesn't exist in the ontology:
-
-    {
-        "error_code" : "ERR_NOT_A_CLASS",
-        "url" : "<ontology URL>",
-        "class" : "<class URI>"
-    }
-
 ## Get the triples contained in a file.
 
-__GET__ /triples?url=triples-uri&type=file-type
+__GET__ /triples?url=triples-uri&type=file-type&user=user
 
-Accepted values for 'type' are (without quotes): "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL", or "N3".
+Accepted values for 'type':
+
+* RDF/XML
+* RDF/XML-ABBREV
+* N-TRIPLE
+* TURTLE
+* TTL
+* N3
+* TSV
+* CSV
 
 Returns a 200 status and a JSON body that looks like the following on success:
 
     {
         "triples" : {
             {
-                "subject" : "subject URI",
-                "predicate" : "predicate URI",
-                "object" : "object URI"
+                "subject" : "subject",
+                "predicate" : "predicate",
+                "object" : "object"
             }
         }
     }
@@ -127,3 +55,11 @@ Returns a 500 status and a JSON body like this if the file is unparseable:
         "error_code" : "ERR_PARSE_FAILED",
         "url" : "<source>"
     }
+
+If the protocol for the 'url' value is irods:// or is omitted, then the file will be
+retrieved from iRODS. If the protocol is http://, the file will be downloaded and parsed.
+
+If the file being parsed is a CSV or a TSV file, the the first column will be the subject,
+the second column will be the predicate, and the third column will be the object. Any
+columns past the first three will be ignored. If the CSV/TSV contains too few columns, then
+the needed columns will be set to an empty string.
