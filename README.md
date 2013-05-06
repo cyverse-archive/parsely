@@ -56,7 +56,7 @@ Returns a 500 status and a JSON body like this if the file is unparseable:
         "url" : "<source>"
     }
 
-If the protocol for the 'url' value is irods:// or is omitted, then the file will be
+If the protocol for the 'url' value is omitted, then the file will be
 retrieved from iRODS. If the protocol is http://, the file will be downloaded and parsed.
 
 If the file being parsed is a CSV or a TSV file, the the first column will be the subject,
