@@ -137,3 +137,24 @@ Possible error codes are:
 * ERR_DOES_NOT_EXIST
 * ERR_NOT_A_USER
 
+## Look up paths in a user's home directory based on file type
+
+__GET__ /type/paths?user=username
+
+Returns a 200 status and a JSON body that looks like the following on success:
+
+    {
+        "paths" : ["/path/to/irods/file"]
+    }
+
+Returns a 500 status and a JSON body like this if something goes wrong:
+
+    {
+        "error_code" : "ERR_PARSE_FAILED",
+        "url" : "<source>"
+    }
+
+Possible error codes are:
+
+* ERR_NOT_A_USER
+
