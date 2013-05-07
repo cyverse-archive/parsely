@@ -139,7 +139,20 @@ Possible error codes are:
 
 ## Look up paths in a user's home directory based on file type
 
-__GET__ /type/paths?user=username
+__GET__ /type/paths?user=username&type=type-string
+
+Accepted values for the "type" parameter:
+
+* RDF/XML
+* RDF/XML-ABBREV
+* N-TRIPLE
+* TURTLE
+* TTL
+* N3
+* tsv
+* csv
+
+URL encode as appropriate.
 
 Returns a 200 status and a JSON body that looks like the following on success:
 
