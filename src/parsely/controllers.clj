@@ -3,8 +3,10 @@
         [clojure-commons.error-codes])
   (:require [cheshire.core :as json]
             [hoot.rdf :as rdf]
+            [hoot.csv :as csv]
             [clojure.core.memoize :as memo]
-            [parsely.actions :as actions]))
+            [parsely.actions :as actions]
+            [parsely.irods :as prods]))
 
 (defn check-missing-params
   [params required-keys]
@@ -50,7 +52,7 @@
 
 (defn accepted-types
   []
-  (set (conj rdf/accepted-languages "csv" "tsv")))
+  (set (concat rdf/accepted-languages csv/csv-types)))
 
 (defn triples-base
   [params]
@@ -60,3 +62,16 @@
 
 (def triples
   (memo/memo-lru triples-base 10))
+
+(defn add-type
+  [body params]
+  (validate-params params {:user string?})
+  (validate-params body {:path string? :type #(contains? (accepted-types) %)})
+  (json/generate-string
+    (prods/add-type (:user params) (:path body) (:type body))))
+
+(defn get-types
+  [params]
+  (validate-params params {:path string? :user string?})
+  (json/generate-string
+    {:types (prods/get-types (:user params) (:path params))}))

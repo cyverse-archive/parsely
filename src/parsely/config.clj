@@ -62,6 +62,11 @@
   [props config-valid configs]
   "parsely.app.irods-resc")
 
+(cc/defprop-str type-attribute
+  "The value that goes in the attribute column for AVUs that define a file type."
+  [props config-valid configs]
+  "parsely.app.type-attribute")
+
 (def jargon-cfg
   (memo/memo #(jg/init (irods-host)
                        (irods-port)

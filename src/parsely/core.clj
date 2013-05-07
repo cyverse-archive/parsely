@@ -35,7 +35,13 @@
        (trap "properties" controllers/properties params)))
   
   (GET "/triples" [:as {params :params}]
-       (trap "triples" controllers/triples params)))
+       (trap "triples" controllers/triples params))
+  
+  (POST "/type" [:as {body :body params :params}]
+        (trap "add-type" controllers/add-type body params))
+  
+  (GET "/type" [:as {params :params}]
+       (trap "get-types" controllers/get-types params)))
 
 (defn site-handler [routes]
   (-> routes

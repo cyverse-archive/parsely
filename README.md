@@ -34,19 +34,19 @@ Accepted values for 'type':
 * TURTLE
 * TTL
 * N3
-* TSV
-* CSV
+* TSV (upper or lowercase)
+* CSV (upper or lowercase)
 
 Returns a 200 status and a JSON body that looks like the following on success:
 
     {
-        "triples" : {
+        "triples" : [
             {
                 "subject" : "subject",
                 "predicate" : "predicate",
                 "object" : "object"
             }
-        }
+        ]
     }
 
 Returns a 500 status and a JSON body like this if the file is unparseable:
@@ -63,3 +63,78 @@ If the file being parsed is a CSV or a TSV file, the the first column will be th
 the second column will be the predicate, and the third column will be the object. Any
 columns past the first three will be ignored. If the CSV/TSV contains too few columns, then
 the needed columns will be set to an empty string.
+
+## Get the file types associated with a file.
+
+__GET__ /type?user=username&path=/path/to/irods/file
+
+Returns a 200 status and a JSON body that looks like the following on success:
+
+    {
+        "types" : ["csv"]
+    }
+
+Possible returned types are:
+
+* RDF/XML
+* RDF/XML-ABBREV
+* N-TRIPLE
+* TURTLE
+* TTL
+* N3
+* tsv
+* csv
+
+The values are determined by looking at the values associated with the ipc-filetype attribute in the AVUs
+associated with the file.
+
+Possible error codes:
+
+* ERR_DOES_NOT_EXIST
+* ERR_NOT_A_USER
+* ERR_NOT_READABLE
+
+## Add a file type to a file.
+
+__POST__/type?user=username
+
+The POSTed body should look like the following:
+
+    {
+        "path" : "/path/to/irods/file",
+        "type" : "csv"
+    }
+
+Accepted values for the "type" field are:
+
+* RDF/XML
+* RDF/XML-ABBREV
+* N-TRIPLE
+* TURTLE
+* TTL
+* N3
+* tsv
+* csv
+
+Returns a 200 status and a JSON body that looks like the following on success:
+
+    {
+        "path" : "/path/to/irods/file",
+        "type" : "csv"
+    }
+
+Returns a 500 status and a JSON body like this if something goes wrong:
+
+    {
+        "error_code" : "ERR_PARSE_FAILED",
+        "url" : "<source>"
+    }
+
+Possible error codes are:
+
+* ERR_NOT_OWNER
+* ERR_BAD_OR_MISSING_FIELD
+* ERR_DOES_NOT_EXIST
+* ERR_NOT_A_USER
+
+
