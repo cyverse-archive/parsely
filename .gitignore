@@ -10,3 +10,4 @@ bin
 \#*\#
 nibblonian.log
 target/
+.DS_Store
