@@ -41,7 +41,10 @@
         (trap "add-type" controllers/add-type body params))
   
   (GET "/type" [:as {params :params}]
-       (trap "get-types" controllers/get-types params)))
+       (trap "get-types" controllers/get-types params))
+  
+  (GET "/type/paths" [:as {params :params}]
+       (trap "find-paths-by-type" controllers/find-typed-paths params)))
 
 (defn site-handler [routes]
   (-> routes

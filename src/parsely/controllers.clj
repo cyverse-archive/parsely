@@ -75,3 +75,9 @@
   (validate-params params {:path string? :user string?})
   (json/generate-string
     {:types (prods/get-types (:user params) (:path params))}))
+
+(defn find-typed-paths
+  [params]
+  (validate-params params {:user string? :type string?})
+  (json/generate-string
+    {:paths (prods/find-paths-with-type (:user params) (:path params))}))

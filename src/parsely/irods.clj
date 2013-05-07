@@ -4,7 +4,8 @@
         [clojure-commons.error-codes]
         [slingshot.slingshot :only [throw+]])
   (:require [hoot.rdf :as rdf]
-            [hoot.csv :as csv]))
+            [hoot.csv :as csv]
+            [clojure-commons.file-utils :as ft]))
 
 (def all-types (set (concat rdf/accepted-languages csv/csv-types)))
 
@@ -48,4 +49,19 @@
                :user user
                :path path}))
     (mapv :value (get-attribute cm path (type-attribute)))))
+
+(defn home-dir
+  [cm user]
+  (ft/path-join "/" (:zone cm) "home" user))
+  
+(defn find-paths-with-type
+  [user type]
+  (with-jargon (jargon-cfg) [cm]
+    (when-not (user-exists? cm user)
+      (throw+ {:error_code ERR_NOT_A_USER
+               :user user}))
+    
+    (list-everything-in-tree-with-attr cm 
+      (home-dir cm user) 
+      {:name (type-attribute) :value type})))
 
