@@ -22,41 +22,17 @@ This assumes that you have leiningen installed.
 
 # Endpoints
 
-## Get the triples contained in a file.
+## Get the list of supported file types
 
-__GET__ /triples?url=triples-uri&type=file-type&user=user
-
-Accepted values for 'type':
-
-* TSV (upper or lowercase)
-* CSV (upper or lowercase)
+__GET__ /type-list
 
 Returns a 200 status and a JSON body that looks like the following on success:
 
     {
-        "triples" : [
-            {
-                "subject" : "subject",
-                "predicate" : "predicate",
-                "object" : "object"
-            }
-        ]
+        "types" : ["csv, "tsv"]
     }
 
-Returns a 500 status and a JSON body like this if the file is unparseable:
-
-    {
-        "error_code" : "ERR_PARSE_FAILED",
-        "url" : "<source>"
-    }
-
-If the protocol for the 'url' value is omitted, then the file will be
-retrieved from iRODS. If the protocol is http://, the file will be downloaded and parsed.
-
-If the file being parsed is a CSV or a TSV file, the the first column will be the subject,
-the second column will be the predicate, and the third column will be the object. Any
-columns past the first three will be ignored. If the CSV/TSV contains too few columns, then
-the needed columns will be set to an empty string.
+No error codes should be returned with this endpoint.
 
 ## Get the file types associated with a file.
 
