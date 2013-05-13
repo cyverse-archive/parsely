@@ -70,6 +70,12 @@
   (json/generate-string
     (prods/add-type (:user params) (:path body) (:type body))))
 
+(defn delete-type
+  [params]
+  (validate-params params {:user string? :type #(contains? (accepted-types) %) :path string?})
+  (json/generate-string
+    (prods/delete-type (:user params) (:path params) (:type params))))
+
 (defn get-types
   [params]
   (validate-params params {:path string? :user string?})

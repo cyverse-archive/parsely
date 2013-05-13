@@ -33,6 +33,36 @@
     {:path path
      :type type}))
 
+(defn get-avus
+  [cm dir-path attr val]
+  "Returns a list of avu maps for set of attributes associated with dir-path"
+  (validate-path-lengths dir-path)
+  (filter
+    #(and (= (:attr %1) attr) 
+          (= (:value %1) val))
+    (get-metadata cm dir-path)))
+
+(defn delete-type
+  [user path type]
+  (with-jargon (jargon-cfg) [cm]
+    (when-not (contains? all-types type)
+      (throw+ {:error_code ERR_BAD_OR_MISSING_FIELD
+               :type type}))
+    (when-not (exists? cm path)
+      (throw+ {:error_code ERR_DOES_NOT_EXIST
+               :path path}))
+    (when-not (user-exists? cm user)
+      (throw+ {:error_code ERR_NOT_A_USER
+               :user user}))
+    (when-not (owns? cm user path)
+      (throw+ {:error_code ERR_NOT_OWNER
+               :user user
+               :path path}))
+    (delete-avus cm path (get-avus cm path (type-attribute) type))
+    {:path path
+     :type type
+     :user user}))
+
 (defn get-types
   [user path]
   (with-jargon (jargon-cfg) [cm]

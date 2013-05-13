@@ -43,6 +43,9 @@
   (GET "/type" [:as {params :params}]
        (trap "get-types" controllers/get-types params))
   
+  (DELETE "/type" [:as {params :params}]
+          (trap "delete-types" controllers/delete-type params))
+  
   (GET "/type-list" []
        (trap "get-type-list" controllers/get-type-list))
   
