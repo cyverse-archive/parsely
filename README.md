@@ -70,12 +70,6 @@ Returns a 200 status and a JSON body that looks like the following on success:
 
 Possible returned types are:
 
-* RDF/XML
-* RDF/XML-ABBREV
-* N-TRIPLE
-* TURTLE
-* TTL
-* N3
 * tsv
 * csv
 
@@ -101,12 +95,6 @@ The POSTed body should look like the following:
 
 Accepted values for the "type" field are:
 
-* RDF/XML
-* RDF/XML-ABBREV
-* N-TRIPLE
-* TURTLE
-* TTL
-* N3
 * tsv
 * csv
 
@@ -137,12 +125,6 @@ __GET__ /type/paths?user=username&type=type-string
 
 Accepted values for the "type" parameter:
 
-* RDF/XML
-* RDF/XML-ABBREV
-* N-TRIPLE
-* TURTLE
-* TTL
-* N3
 * tsv
 * csv
 
