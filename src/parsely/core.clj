@@ -43,6 +43,9 @@
   (GET "/type" [:as {params :params}]
        (trap "get-types" controllers/get-types params))
   
+  (GET "/type-list" []
+       (trap "get-type-list" controllers/get-type-list))
+  
   (GET "/type/paths" [:as {params :params}]
        (trap "find-paths-by-type" controllers/find-typed-paths params)))
 
