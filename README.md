@@ -28,12 +28,6 @@ __GET__ /triples?url=triples-uri&type=file-type&user=user
 
 Accepted values for 'type':
 
-* RDF/XML
-* RDF/XML-ABBREV
-* N-TRIPLE
-* TURTLE
-* TTL
-* N3
 * TSV (upper or lowercase)
 * CSV (upper or lowercase)
 
