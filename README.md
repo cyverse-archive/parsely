@@ -95,6 +95,36 @@ Possible error codes are:
 * ERR_DOES_NOT_EXIST
 * ERR_NOT_A_USER
 
+## Delete a file type from a file.
+
+__DELETE__ /type?user=username&path=/irods/path&type=csv
+
+Accepted values for the "type" field are:
+
+* tsv
+* csv
+
+Returns a 200 status and a JSON body that looks like the following on success:
+
+    {
+        "path" : "/path/to/irods/file",
+        "type" : "csv"
+    }
+
+Returns a 500 status and a JSON body like this if something goes wrong:
+
+    {
+        "error_code" : "ERR_NOT_OWNER",
+        "url" : "<source>"
+    }
+
+Possible error codes are:
+
+* ERR_NOT_OWNER
+* ERR_BAD_OR_MISSING_FIELD
+* ERR_DOES_NOT_EXIST
+* ERR_NOT_A_USER
+
 ## Look up paths in a user's home directory based on file type
 
 __GET__ /type/paths?user=username&type=type-string
