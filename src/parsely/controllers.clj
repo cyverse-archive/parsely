@@ -89,3 +89,10 @@
     {:paths (prods/find-paths-with-type (:user params) (:path params))}))
 
 (defn get-type-list [] (json/generate-string {:types csv/csv-types}))
+
+(defn set-auto-type
+  [body params]
+  (validate-params params {:user string?})
+  (validate-params body {:path string?})
+  (json/generate-string
+    (prods/auto-add-type (:user params) (:path body))))

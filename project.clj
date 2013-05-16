@@ -13,6 +13,8 @@
                  [ring/ring-devel "1.1.8"]
                  [cheshire "5.0.2"]
                  [clj-http "0.7.2"]
+                 [instaparse "1.1.0"]
+                 [org.apache.tika/tika-core "1.3"]
                  [org.clojure/core.memoize "0.5.3"]]
   :iplant-rpm {:summary "parsely"
                :dependencies ["iplant-service-config >= 0.1.0-5"]

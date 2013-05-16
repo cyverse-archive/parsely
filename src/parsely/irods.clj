@@ -5,7 +5,8 @@
         [slingshot.slingshot :only [throw+]])
   (:require [hoot.rdf :as rdf]
             [hoot.csv :as csv]
-            [clojure-commons.file-utils :as ft]))
+            [clojure-commons.file-utils :as ft])
+  (:import [org.apache.tika Tika]))
 
 (def all-types (set (concat rdf/accepted-languages csv/csv-types)))
 
@@ -29,9 +30,34 @@
                :user user
                :path path}))
     
-    (add-metadata cm path (type-attribute) type "")
+    (set-metadata cm path (type-attribute) type "")
     {:path path
      :type type}))
+
+(defn content-type
+  [cm path]
+  (.detect (Tika.) (input-stream cm path)))
+
+(defn auto-add-type
+  [user path]
+  (with-jargon (jargon-cfg) [cm]
+    (when-not (exists? cm path)
+      (throw+ {:error_code ERR_DOES_NOT_EXIST
+               :path path}))
+    
+    (when-not (user-exists? cm user)
+      (throw+ {:error_code ERR_NOT_A_USER
+               :user user}))
+    
+    (when-not (owns? cm user path)
+      (throw+ {:error_code ERR_NOT_OWNER
+               :user user
+               :path path}))
+    
+    (let [type (content-type cm path)] 
+      (set-metadata cm path (type-attribute) type "")
+      {:path path
+       :type type})))
 
 (defn get-avus
   [cm dir-path attr val]
