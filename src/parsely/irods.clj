@@ -59,6 +59,25 @@
       {:path path
        :type type})))
 
+(defn preview-auto-type
+  [user path]
+  (with-jargon (jargon-cfg) [cm]
+    (when-not (exists? cm path)
+      (throw+ {:error_code ERR_DOES_NOT_EXIST
+               :path path}))
+    
+    (when-not (user-exists? cm user)
+      (throw+ {:error_code ERR_NOT_A_USER
+               :user user}))
+    
+    (when-not (owns? cm user path)
+      (throw+ {:error_code ERR_NOT_OWNER
+               :user user
+               :path path}))
+    
+    {:path path
+     :type (content-type cm path)}))
+
 (defn get-avus
   [cm dir-path attr val]
   "Returns a list of avu maps for set of attributes associated with dir-path"

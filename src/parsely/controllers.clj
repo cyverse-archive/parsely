@@ -96,3 +96,9 @@
   (validate-params body {:path string?})
   (json/generate-string
     (prods/auto-add-type (:user params) (:path body))))
+
+(defn preview-auto-type
+  [params]
+  (validate-params params {:user string? :path string?})
+  (json/generate-string
+    (prods/preview-auto-type (:user params) (:path params))))

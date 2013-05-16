@@ -46,6 +46,9 @@
   (POST "/auto-type" [:as {body :body params :params}]
         (trap "set-auto-type" controllers/set-auto-type body params))
   
+  (GET "/auto-type" [:as {params :params}]
+       (trap "get-auto-type" controllers/preview-auto-type params))
+  
   (DELETE "/type" [:as {params :params}]
           (trap "delete-types" controllers/delete-type params))
   
