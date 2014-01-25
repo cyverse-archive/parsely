@@ -27,6 +27,6 @@
          :init parsely.core/load-configuration-from-file
          :port 31326}
   :plugins [[lein-ring "0.8.3"]
-            [org.iplantc/lein-iplant-rpm "1.4.0-SNAPSHOT"]]
+            [org.iplantc/lein-iplant-rpm "1.4.3-SNAPSHOT"]]
   :repositories {"iplant"
                  "http://projects.iplantcollaborative.org/archiva/repository/internal/"})
